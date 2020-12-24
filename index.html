@@ -1,16 +1,11 @@
-<!--
- * @Author: 五道杠
--->
-<!--
- * @Author: 五道杠
--->
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>北榆林帝国村</title>
+  <title>北榆林大帝国村</title>
   <link rel="stylesheet" href="./style/reset.css">
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css">
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
@@ -85,6 +80,16 @@
 
     });
     map.addOverlay(prism);
+    var label = new BMapGL.Label('北榆林大帝国村', {       // 创建文本标注
+      position: point,                          // 设置标注的地理位置
+      offset: new BMapGL.Size(0, 0)           // 设置标注的偏移量
+    })
+    map.addOverlay(label);
+    label.setStyle({                              // 设置label的样式
+      color: '#000',
+      fontSize: '5px',
+      border: '2px solid #1E90FF'
+    })
   }
   initMap()
 </script>
