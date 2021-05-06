@@ -1,108 +1,66 @@
-<!--
- * @Author: 五道杠
--->
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>北榆林大帝国村</title>
-  <link rel="stylesheet" href="./style/reset.css">
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css">
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-  <link rel="stylesheet" href="./style/style.css">
-  <script type="text/javascript"
-    src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=GAfsMFHpFm4uqiayoFo7Vc3T28n4FqMH"></script>
-  <style>
-    .swiper-container {
-      width: 200px;
-      height: 200px;
-    }
-
-    .swiper-slide {
-      width: 100px;
-      height: 100px;
-      background-color: red;
-    }
-
-    #container {
-      width: 300px;
-      height: 300px;
-    }
-  </style>
-</head>
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>浏览器精确定位</title>
+      <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <style>
+        html,body,#container{
+            height:100%;
+        }
+        .info{
+            width:26rem;
+        }
+    </style>
 <body>
-  <div class="swiper-container">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">slider1</div>
-      <div class="swiper-slide">slider2</div>
-      <div class="swiper-slide">slider3</div>
-    </div>
-  </div>
-  <div id="container"></div>
-  <button id='nav'>北京导航到北榆林</button>
-</body>
-
-</html>
-
-<script src="https://unpkg.com/swiper/swiper-bundle.js"> </script>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"> </script>
-<script src="./javascript/dian.js"></script>
-<script>
-  var mySwiper = new Swiper('.swiper-container', {
-    autoplay: { delay: 1000, },
-    effect: 'coverflow',
-    loop: true
-  })
-  new Swiper('.swiper-container')
-  var mySwiper = document.querySelector('.swiper-container').swiper
-  mySwiper.slideNext();
-  function initMap(params) {
-    var map = window.map = new BMapGL.Map("container");
-    var point = new BMapGL.Point(115.359876, 36.761769);//北榆林坐标
-    map.centerAndZoom(point, 14);
-    map.enableScrollWheelZoom(true)
-    var zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件
-    map.addControl(zoomCtrl)
-    map.setTilt(25);       //设置地图的倾斜角度
-    let path = [
-      new BMapGL.Point(115.35627, 36.760956),
-      new BMapGL.Point(115.357756, 36.763137),
-      new BMapGL.Point(115.359288, 36.7634),
-      new BMapGL.Point(115.362962, 36.762831),
-      new BMapGL.Point(115.364534, 36.762108),
-      new BMapGL.Point(115.364444, 36.759846),
-      new BMapGL.Point(115.363501, 36.759824),
-      new BMapGL.Point(115.358444, 36.760251),
-    ]
-    var prism = new BMapGL.Prism(path, 50, {
-      topFillColor: '#5679ea',
-      topFillOpacity: 0.5,
-      sideFillColor: '#5679ea',
-      sideFillOpacity: 0.9
-
+<div id='container'></div>
+<div class="info">
+    <h4 id='status'></h4><hr>
+    <p id='result'></p><hr>
+    <p >由于众多浏览器已不再支持非安全域的定位请求，为保位成功率和精度，请升级您的站点到HTTPS。</p>
+</div>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=d911b0bda40fae2f31aa405dbe2207f0"></script>
+<script type="text/javascript">
+    var map = new AMap.Map('container', {
+        resizeEnable: true
     });
-    map.addOverlay(prism);
-    var label = new BMapGL.Label('北榆林大帝国村', {       // 创建文本标注
-      position: point,                          // 设置标注的地理位置
-      offset: new BMapGL.Size(0, 0)           // 设置标注的偏移量
-    })
-    map.addOverlay(label);
-    label.setStyle({                              // 设置label的样式
-      color: '#000',
-      fontSize: '5px',
-      border: '2px solid #1E90FF'
-    })
-  }
-  initMap()
-  function beijingdaohang() {
-    var p1 = new BMapGL.Point(116.403694, 39.916042)
-    var p2 = new BMapGL.Point(115.359876, 36.761769);
-    var driving = new BMapGL.DrivingRoute(window.map, { renderOptions: { map: window.map, autoViewport: true } });
-    driving.search(p1, p2);
-  }
-  let nav = document.getElementById('nav')
-  nav.addEventListener('click', beijingdaohang, true)
+    AMap.plugin('AMap.Geolocation', function() {
+        var geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 10000,          //超过10秒后停止定位，默认：5s
+            buttonPosition:'RB',    //定位按钮的停靠位置
+            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition(function(status,result){
+            if(status=='complete'){
+                onComplete(result)
+            }else{
+                onError(result)
+            }
+        });
+    });
+    //解析定位结果
+    function onComplete(data) {
+        document.getElementById('status').innerHTML='定位成功'
+        var str = [];
+        str.push('定位结果：' + data.position);
+        str.push('定位类别：' + data.location_type);
+        if(data.accuracy){
+             str.push('精度：' + data.accuracy + ' 米');
+        }//如为IP精确定位结果则没有精度信息
+        str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+        document.getElementById('result').innerHTML = str.join('<br>');
+    }
+    //解析定位错误信息
+    function onError(data) {
+        document.getElementById('status').innerHTML='定位失败'
+        document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
+    }
 </script>
+</body>
+</html>
