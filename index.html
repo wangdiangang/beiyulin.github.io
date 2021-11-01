@@ -1,108 +1,34 @@
-<!--
- * @Author: 五道杠
--->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>北榆林大帝国村</title>
-  <link rel="stylesheet" href="./style/reset.css">
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css">
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-  <link rel="stylesheet" href="./style/style.css">
-  <script type="text/javascript"
-    src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=GAfsMFHpFm4uqiayoFo7Vc3T28n4FqMH"></script>
-  <style>
-    .swiper-container {
-      width: 200px;
-      height: 200px;
-    }
-
-    .swiper-slide {
-      width: 100px;
-      height: 100px;
-      background-color: red;
-    }
-
-    #container {
-      width: 300px;
-      height: 300px;
-    }
-  </style>
+    <meta charset="UTF-8">
 </head>
 
 <body>
-  <div class="swiper-container">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">slider1</div>
-      <div class="swiper-slide">slider2</div>
-      <div class="swiper-slide">slider3</div>
+    <div id="app">
+        <button class="gda-btn" id='btn'>点击开编辑器</button>
     </div>
-  </div>
-  <div id="container"></div>
-  <button id='nav'>北京导航到北榆林</button>
 </body>
+<script src="https://cdn.dancf.com/editor-sdk@1.2.0"></script>
+<script>
+    const editor = window.gaoding.createTemplateEditor({
+        appId: 'LGAADN019451',
+    });
+
+    let btn=document.querySelector('#btn')
+    btn.addEventListener('click',()=>{
+        const res =  editor.openTemplate({
+                id: '48179161',
+                onTemplateLoad(e) {
+                    e.addImage('https://st0.dancf.com/static/02/202104280445-9936.png', {
+                        width: 654,
+                        height: 441,
+                    });
+                },
+            });
+            console.log(res);
+    })
+</script>
 
 </html>
-
-<script src="https://unpkg.com/swiper/swiper-bundle.js"> </script>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"> </script>
-<script src="./javascript/dian.js"></script>
-<script>
-  var mySwiper = new Swiper('.swiper-container', {
-    autoplay: { delay: 1000, },
-    effect: 'coverflow',
-    loop: true
-  })
-  new Swiper('.swiper-container')
-  var mySwiper = document.querySelector('.swiper-container').swiper
-  mySwiper.slideNext();
-  function initMap(params) {
-    var map = window.map = new BMapGL.Map("container");
-    var point = new BMapGL.Point(115.359876, 36.761769);//北榆林坐标
-    map.centerAndZoom(point, 14);
-    map.enableScrollWheelZoom(true)
-    var zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件
-    map.addControl(zoomCtrl)
-    map.setTilt(25);       //设置地图的倾斜角度
-    let path = [
-      new BMapGL.Point(115.35627, 36.760956),
-      new BMapGL.Point(115.357756, 36.763137),
-      new BMapGL.Point(115.359288, 36.7634),
-      new BMapGL.Point(115.362962, 36.762831),
-      new BMapGL.Point(115.364534, 36.762108),
-      new BMapGL.Point(115.364444, 36.759846),
-      new BMapGL.Point(115.363501, 36.759824),
-      new BMapGL.Point(115.358444, 36.760251),
-    ]
-    var prism = new BMapGL.Prism(path, 50, {
-      topFillColor: '#5679ea',
-      topFillOpacity: 0.5,
-      sideFillColor: '#5679ea',
-      sideFillOpacity: 0.9
-
-    });
-    map.addOverlay(prism);
-    var label = new BMapGL.Label('北榆林大帝国村', {       // 创建文本标注
-      position: point,                          // 设置标注的地理位置
-      offset: new BMapGL.Size(0, 0)           // 设置标注的偏移量
-    })
-    map.addOverlay(label);
-    label.setStyle({                              // 设置label的样式
-      color: '#000',
-      fontSize: '5px',
-      border: '2px solid #1E90FF'
-    })
-  }
-  initMap()
-  function beijingdaohang() {
-    var p1 = new BMapGL.Point(116.403694, 39.916042)
-    var p2 = new BMapGL.Point(115.359876, 36.761769);
-    var driving = new BMapGL.DrivingRoute(window.map, { renderOptions: { map: window.map, autoViewport: true } });
-    driving.search(p1, p2);
-  }
-  let nav = document.getElementById('nav')
-  nav.addEventListener('click', beijingdaohang, true)
-</script>
